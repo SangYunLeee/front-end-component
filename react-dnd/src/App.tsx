@@ -17,8 +17,14 @@ import {
 
 import {SortableItem} from './SortableItem';
 
+const itemsArray = [
+  {id: 1, name: 'Item 1'},
+  {id: 2, name: 'Item 2'},
+  {id: 3, name: 'Item 3'},
+]
+
 export default function App() {
-  const [items, setItems] = useState([1, 2, 3]);
+  const [items, setItems] = useState(itemsArray);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -36,7 +42,7 @@ export default function App() {
         items={items}
         strategy={verticalListSortingStrategy}
       >
-        {items.map(id => <SortableItem key={id} id={id} />)}
+        {items.map(item => <SortableItem key={item.id} id={item.id} name={item.name} />)}
       </SortableContext>
     </DndContext>
   );
@@ -46,8 +52,8 @@ export default function App() {
 
     if (active.id !== over!.id) {
       setItems((items) => {
-        const oldIndex = items.findIndex((item) => item === active.id);
-        const newIndex = items.findIndex((item) => item === over!.id);
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over!.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });
